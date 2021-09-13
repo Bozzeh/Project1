@@ -2,25 +2,23 @@
     <v-app>
         <v-app-bar>
         </v-app-bar>
-        <v-main>
-            <HelloWorld/>
-        </v-main>
+        <v-main></v-main>
     </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
+import data from "./plugins/data";
 
 export default {
     name: 'App',
-
-    components: {
-        HelloWorld,
-    },
-
+    components: { },
     data: () => ({
-        //
+        enquiries: []
     }),
+    mounted () {
+        this.enquiries = data.enquiries[0]["enquiries"];
+        console.log(this.enquiries);
+    }
 };
 </script>
 
