@@ -26,3 +26,7 @@ npm run lint
 *Methods:* Pascal Case.  
 *Styles:* Param Case.  
 *Data Formatting and Arrangement:* Ordered Alphabetically.  
+
+### Commit Principles
+*Summary: P## = Project Issue Number (https://github.com/Bozzeh/Project1/projects/1) - Replicated to work like JIRA issues*  
+*Description: Work achieved/completed*  
