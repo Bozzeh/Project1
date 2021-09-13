@@ -21,8 +21,8 @@ npm run lint
 ```
 
 ### Syntax and Code Standard
-*Computed Functions:* Pascal Case.
-*Data Variables:* Camel Case.
-*Methods:* Pascal Case.
-*Styles:* Param Case.
-*Data Formatting and Arrangement:* Ordered Alphabetically.
+*Computed Functions:* Pascal Case.  
+*Data Variables:* Camel Case.  
+*Methods:* Pascal Case.  
+*Styles:* Param Case.  
+*Data Formatting and Arrangement:* Ordered Alphabetically.  
