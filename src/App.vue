@@ -1,18 +1,30 @@
 <template>
     <v-app>
-        <List :enquiries="enquiries" :colSorted="colSorted" @sortIndex="(event) => SortTable(event)"></List>
+        <v-card class="content-size" flat>
+            <v-card-title>Enquiries</v-card-title>
+            <v-card flat> <!-- Additional padding -->
+                <v-card-actions class="dont-flex">
+                    <FilterComponent></FilterComponent>
+                </v-card-actions>
+                <v-card-actions class="dont-flex">
+                    <ListComponent :enquiries="enquiries" :colSorted="colSorted" @sortIndex="(event) => SortTable(event)" style="margin-top: 2%;"></ListComponent>
+                </v-card-actions>
+            </v-card>
+        </v-card>
     </v-app>
 </template>
 
 <script>
-import List from "./components/List.vue";
+import ListComponent from "./components/List.vue";
+import FilterComponent from "./components/Filter.vue";
 import data from "./plugins/data";
 import $ from "jquery";
 
 export default {
     name: 'App',
     components: { 
-        List
+        ListComponent, 
+        FilterComponent 
     },
     data () {
         return {
@@ -101,6 +113,17 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+    /* @import "../assets/styles.css"; */
 
+    /* Applied to maintain same html sizes across alligned elements */
+    .content-size {
+        width: 95%;
+        margin: 0 auto;
+    }
+
+    /* Default for v-card-actions is display: flex */
+    .dont-flex {
+        display: block; 
+    }
 </style>

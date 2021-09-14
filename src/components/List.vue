@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-card flat>
-            <table class="content-size enquiries-table">
+            <table class="enquiries-table">
                 <tr>
                     <th class="table-headers" v-for="(headers, i) in headings" :key="i" align="left" @click="EmitIndex(i)">
                         {{ headers }} &nbsp; <i v-if="i == 0 || i == 2" :class="DisplaySortIcon(i)" style="padding: 0;"></i>
@@ -16,7 +16,7 @@
             </table>
 
             <!-- Pagination -->
-            <v-card class="content-size" flat>
+            <v-card flat>
                 <v-card-actions style="padding: 0;">
                     <ul class="pagination">
                         <li v-for="i in enquiries.length" :key="i">
@@ -33,7 +33,7 @@
     </div>
 </template>
 
-<script>
+<script scoped>
 export default {
     name: 'List',
     props: [ 'enquiries', 'colSorted' ],
@@ -88,6 +88,8 @@ export default {
 </script>
 
 <style>
+    /* @import "../assets/styles.css"; */
+
     table * {
         padding-top: 10px;
         padding-bottom: 10px;
@@ -103,7 +105,7 @@ export default {
 
     /* ul and li are for the custom made pagination - don't show bullet point and align it horizontally */
     .pagination {
-        padding: 0;
+        padding: 0 !important;
         list-style: none;
     }
 
@@ -111,13 +113,8 @@ export default {
         float: left;
     }
 
-    /* Applied to maintain same html sizes across alligned elements */
-    .content-size {
-        width: 80%;
-        margin: 0 auto;
-    }
-
     .enquiries-table {
+        width: 100%;
         border-spacing: 0;
         border-radius: 5px;
         border-collapse: collapse; /* Allows setting of the table border colour */
