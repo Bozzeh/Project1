@@ -16,7 +16,7 @@
             <!-- Pagination -->
             <v-card class="content-size" flat>
                 <v-card-actions style="padding: 0;">
-                    <ul style="padding: 0;">
+                    <ul class="pagination">
                         <li v-for="index in enquiries.length" :key="index">
                             <v-btn :class="ActivePage(index)" @click="SetActivePage(index)">{{ index }}</v-btn>
                         </li>
@@ -84,7 +84,8 @@ export default {
     }
 
     /* ul and li are for the custom made pagination - don't show bullet point and align it horizontally */
-    ul {
+    .pagination {
+        padding: 0;
         list-style: none;
     }
 
