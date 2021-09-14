@@ -8,8 +8,8 @@
                     </th>
                 </tr>
                 <tr class="table-rows" v-for="(enquiry, i) in enquiries[activePage - 1]" :key="i">
-                    <td width="15%">{{ enquiry.id }}</td>
-                    <td width="15%">{{ enquiry.postcode }}</td>
+                    <td width="12%">{{ enquiry.id }}</td>
+                    <td width="18%">{{ enquiry.postcode }}</td>
                     <td width="15%">{{ enquiry.type }}</td>
                     <td width="55%">{{ enquiry.comments }}</td>
                 </tr>
