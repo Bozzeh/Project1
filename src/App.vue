@@ -1,13 +1,15 @@
 <template>
-    <v-app>
-        <v-card class="content-size" flat>
-            <v-card-title>Enquiries</v-card-title>
+    <v-app style="background-color: silver;">
+        <v-card class="content-size" flat style="background-color: silver;">
+            <v-card-title><strong>Enquiries</strong></v-card-title>
             <v-card flat> <!-- Additional padding -->
                 <v-card-actions class="dont-flex">
                     <FilterComponent></FilterComponent>
                 </v-card-actions>
+            </v-card>
+            <v-card flat style="margin-top: 2%; border-top-right-radius: 5px; border-top-left-radius: 5px;">
                 <v-card-actions class="dont-flex">
-                    <ListComponent :enquiries="enquiries" :colSorted="colSorted" @sortIndex="(event) => SortTable(event)" style="margin-top: 2%;"></ListComponent>
+                    <ListComponent :enquiries="enquiries" :colSorted="colSorted" @sortIndex="(event) => SortTable(event)"></ListComponent>
                 </v-card-actions>
             </v-card>
         </v-card>
@@ -125,5 +127,6 @@ export default {
     /* Default for v-card-actions is display: flex */
     .dont-flex {
         display: block; 
+        padding: 0;
     }
 </style>

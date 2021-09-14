@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-card flat>
+        <v-card class="list-card">
             <table class="enquiries-table">
                 <tr>
                     <th class="table-headers" v-for="(headers, i) in headings" :key="i" align="left" @click="EmitIndex(i)">
@@ -16,7 +16,7 @@
             </table>
 
             <!-- Pagination -->
-            <v-card flat>
+            <v-card class="pagination-card" flat>
                 <v-card-actions style="padding: 0;">
                     <ul class="pagination">
                         <li v-for="i in enquiries.length" :key="i">
@@ -103,6 +103,20 @@ export default {
         border-bottom: 1px solid rgb(0, 0, 0, 0.4);
     }
 
+    .list-card {
+        border: 1px solid rgba(0, 0, 0, 0.3) !important; 
+        border-radius: 5px !important;
+    }
+
+    .pagination-card {
+        padding-bottom: 1%; 
+        background-color: silver !important; 
+        border-top-left-radius: 0 !important;
+        border-top-right-radius: 0 !important;
+        border-bottom-left-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+    }
+
     /* ul and li are for the custom made pagination - don't show bullet point and align it horizontally */
     .pagination {
         padding: 0 !important;
@@ -120,14 +134,6 @@ export default {
         border-collapse: collapse; /* Allows setting of the table border colour */
     }
 
-    .enquiries-table th:nth-child(1) {
-        border-top-left-radius: 5px !important;
-    }
-
-    .enquiries-table th:last-child {
-        border-top-right-radius: 5px !important;
-    }
-
     .table-headers {
         background-color: rgba(192, 192, 192, 0.8);
     }
@@ -137,7 +143,7 @@ export default {
     }
 
     .table-rows {
-        border-top: 1px solid rgb(0, 0, 0, 0.15);
+        border-bottom: 1px solid rgb(0, 0, 0, 0.15);
     }
 
     .active {
