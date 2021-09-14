@@ -25,8 +25,8 @@
 
 <script>
 export default {
-    name: 'FilterComponent',
-    props: [ ],
+    name: "FilterComponent",
+    props: [ "enquiries" ],
     data () {
         return { }
     },

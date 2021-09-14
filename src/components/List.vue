@@ -35,8 +35,8 @@
 
 <script scoped>
 export default {
-    name: 'List',
-    props: [ 'enquiries', 'colSorted' ],
+    name: "List",
+    props: [ "enquiries", "colSorted" ],
     data () {
         return {
             activePage: 1, // Will be the page active by the user
@@ -77,6 +77,10 @@ export default {
         },
         // Emit to the parent component the column to sort. This way we can sort the original dataset and once again return the dataset paginated
         EmitIndex: function (i) {
+            if (i == 1 || i == 3) { // Don't sort on postcode or comments
+                return;
+            }
+
             this.$emit("sortIndex", i);
         },
         SetActivePage: function (i) {
