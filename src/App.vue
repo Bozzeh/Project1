@@ -1,7 +1,9 @@
 <template>
     <v-app style="background-color: silver;">
         <v-card class="content-size" flat style="background-color: silver;">
-            <v-card-title><strong>Enquiries</strong></v-card-title>
+            <v-card-title>
+                <strong>Enquiries</strong>
+            </v-card-title>
             <v-card flat> <!-- Additional padding -->
                 <v-card-actions class="dont-flex">
                     <FilterComponent></FilterComponent>

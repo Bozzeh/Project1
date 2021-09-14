@@ -1,7 +1,9 @@
 <template>
     <div>
         <v-card>
-            <v-card-title>Filters</v-card-title>
+            <v-card-title>
+                <strong>Filters</strong>
+            </v-card-title>
             <v-card-actions>
                 <v-select></v-select>
                 <v-select></v-select>
