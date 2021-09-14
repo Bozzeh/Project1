@@ -1,13 +1,24 @@
 <template>
     <div>
         <v-card>
-            <v-card-title>
-                <strong>Filters</strong>
-            </v-card-title>
-            <v-card-actions>
-                <v-select></v-select>
-                <v-select></v-select>
-            </v-card-actions>
+            <v-row>
+                <v-col cols="6" style="padding-bottom: 0;">
+                    <v-card-title style="padding-bottom: 0;">
+                        <strong>Filters</strong>
+                    </v-card-title>
+                </v-col>
+                <v-col cols="6">
+                    <v-card-title style="padding-bottom: 0; font-size: 14px; float: right;">Clear All</v-card-title>
+                </v-col>
+            </v-row>
+            <v-row style="padding-left: 1%;">
+                <v-col cols="2">
+                    <v-select label="Type"></v-select>
+                </v-col>
+                <v-col cols="2">
+                    <v-select label="Postcode"></v-select>
+                </v-col>
+            </v-row>
         </v-card>
     </div>
 </template>
