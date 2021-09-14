@@ -1,9 +1,6 @@
 <template>
     <v-app>
-        <v-app-bar>
-            <List></List>
-        </v-app-bar>
-        <v-main></v-main>
+        <List :enquiries="enquiries"></List>
     </v-app>
 </template>
 
