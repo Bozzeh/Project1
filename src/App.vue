@@ -1,12 +1,13 @@
 <template>
     <v-app>
-        <List :enquiries="enquiries"></List>
+        <List :enquiries="enquiries" :colSorted="colSorted" @sortIndex="(event) => SortTable(event)"></List>
     </v-app>
 </template>
 
 <script>
 import List from "./components/List.vue";
 import data from "./plugins/data";
+import $ from "jquery";
 
 export default {
     name: 'App',
@@ -15,11 +16,43 @@ export default {
     },
     data () {
         return {
+            colSorted: null,
+            curVal: null,
+            dir: null,
             enquiries: [],
             results: 5 // Number of records per page
         }
     },
     methods: {
+        // Perform sort on a given column
+        DynamicSort: function (value) {
+            let dir = this.dir; // To fix scoping issue inside the function below
+            return function (a, b) { // Compare current and next values from the given column value
+                var retVal = 0;
+                if (dir == "asc") { // Sort by descending order
+                    if (a[value] == "") {
+                        retVal = 1;
+                    } else if (b[value] == "") {
+                        retVal = -1;
+                    } else retVal = a[value].toString().localeCompare(b[value]); // To allow for consistent sorting behaviour, convert numbers to string
+                } else { // Sort by ascending order
+                    if (a[value] == "") {
+                        retVal = -1;
+                    } else if (b[value] == "") {
+                        retVal = 1;
+                    } else retVal = a[value].toString().localeCompare(b[value]);
+                }
+
+                // Bonus - If we sort the type column, then sort the id also as the secondary sort in ascending order
+                if (retVal == 0) {
+                    if (dir == "asc") {
+                        retVal = -a["id"].toString().localeCompare(b["id"]);
+                    } else retVal = a["id"].toString().localeCompare(b["id"]);
+                }
+
+                return retVal;
+            }
+        },
         // This will reduce the given array to lengths given in the result param
         PaginateData (arr, result) { 
             return arr.reduce((acc, val, i) => {
@@ -29,6 +62,36 @@ export default {
 
                 return acc;
             }, [])
+        },
+        // column corresponds to the header in the table position. column var will be the column sorted on. Then get the data value respective to column
+        SortTable: function (column) { // Removes the sortorder class before adding the new one
+            $(".sortorder").remove();
+            
+            console.log("Sorting column: " + column);
+            // Only ID and postcode are sortable headers
+            switch (column) {
+                case 0: // ID
+                    this.curVal = "id";
+                    break;
+                case 2: // Type
+                    this.curVal= "type";
+                    break;
+                default:
+                    this.curVal = null;
+                    break;
+            }
+
+            this.enquiries = data.enquiries[0]["enquiries"].sort(this.DynamicSort(this.curVal));
+            if (this.dir == null || this.dir == "desc") {
+                this.dir = "asc";
+            } else if (this.dir == "asc") {
+                this.dir = "desc";
+                this.enquiries = this.enquiries.reverse(); // .reverse() just flips the current order of data, so sort it then reverse it
+            }
+
+            this.colSorted = { "column": column, "dir": this.dir };
+            // Finally paginate the dataset after the sort
+            this.enquiries = this.PaginateData(this.enquiries, this.results);
         }
     },
     mounted () {

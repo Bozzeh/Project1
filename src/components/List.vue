@@ -3,13 +3,15 @@
         <v-card flat>
             <table class="content-size enquiries-table">
                 <tr>
-                    <th class="table-headers" v-for="(headers, i) in headings" :key="i" align="left">{{ headers }}</th>
+                    <th class="table-headers" v-for="(headers, i) in headings" :key="i" align="left" @click="EmitIndex(i)">
+                        {{ headers }} &nbsp; <i v-if="i == 0 || i == 2" :class="DisplaySortIcon(i)" style="padding: 0;"></i>
+                    </th>
                 </tr>
                 <tr class="table-rows" v-for="(enquiry, i) in enquiries[activePage - 1]" :key="i">
-                    <td width="10%">{{ enquiry.id }}</td>
-                    <td width="10%">{{ enquiry.postcode }}</td>
-                    <td width="10%">{{ enquiry.type }}</td>
-                    <td width="70%">{{ enquiry.comments }}</td>
+                    <td width="15%">{{ enquiry.id }}</td>
+                    <td width="15%">{{ enquiry.postcode }}</td>
+                    <td width="15%">{{ enquiry.type }}</td>
+                    <td width="55%">{{ enquiry.comments }}</td>
                 </tr>
             </table>
 
@@ -17,8 +19,8 @@
             <v-card class="content-size" flat>
                 <v-card-actions style="padding: 0;">
                     <ul class="pagination">
-                        <li v-for="index in enquiries.length" :key="index">
-                            <v-btn :class="ActivePage(index)" @click="SetActivePage(index)">{{ index }}</v-btn>
+                        <li v-for="i in enquiries.length" :key="i">
+                            <v-btn :class="ActivePage(i)" @click="SetActivePage(i)">{{ i }}</v-btn>
                         </li>
                     </ul>
                 </v-card-actions>
@@ -34,7 +36,7 @@
 <script>
 export default {
     name: 'List',
-    props: [ 'enquiries' ],
+    props: [ 'enquiries', 'colSorted' ],
     data () {
         return {
             activePage: 1, // Will be the page active by the user
@@ -58,14 +60,28 @@ export default {
     },
     methods: {
         // When a new page is clicked, then add the active class to it
-        ActivePage: function (index) {
+        ActivePage: function (i) {
             return {
-                "active": this.activePage == index
+                "active": this.activePage == i
             };
         },
-        SetActivePage: function (index) {
-            this.activePage = index;
+        // Get the correct icon on the current sort val, otherwise default icon
+        DisplaySortIcon: function (i) {
+            if (this.colSorted != null && this.colSorted["column"] == i) {
+                if (this.colSorted["dir"] == "asc") {
+                    return "fas fa-sort-up";
+                } else return "fas fa-sort-down";
+            }
+
+            return "fas fa-sort";
         },
+        // Emit to the parent component the column to sort. This way we can sort the original dataset and once again return the dataset paginated
+        EmitIndex: function (i) {
+            this.$emit("sortIndex", i);
+        },
+        SetActivePage: function (i) {
+            this.activePage = i;
+        }
     },
     mounted () { }
 }
@@ -73,10 +89,12 @@ export default {
 
 <style>
     table * {
-        padding-left: 20px;
-        padding-right: 20px;
         padding-top: 10px;
         padding-bottom: 10px;
+    }
+
+    table *:nth-child(1) {
+        padding-left: 10px;
     }
 
     th {
