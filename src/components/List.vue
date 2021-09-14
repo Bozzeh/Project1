@@ -6,10 +6,10 @@
                     <th class="table-headers" v-for="(headers, i) in headings" :key="i" align="left">{{ headers }}</th>
                 </tr>
                 <tr class="table-rows" v-for="(enquiry, i) in enquiries[activePage - 1]" :key="i">
-                    <td width="12%">{{ enquiry.id }}</td>
-                    <td width="12%">{{ enquiry.postcode }}</td>
-                    <td width="12%">{{ enquiry.type }}</td>
-                    <td width="64%">{{ enquiry.comments }}</td>
+                    <td width="10%">{{ enquiry.id }}</td>
+                    <td width="10%">{{ enquiry.postcode }}</td>
+                    <td width="10%">{{ enquiry.type }}</td>
+                    <td width="70%">{{ enquiry.comments }}</td>
                 </tr>
             </table>
 
@@ -100,10 +100,17 @@ export default {
     }
 
     .enquiries-table {
-        border: 1px solid black;
         border-spacing: 0;
         border-radius: 5px;
         border-collapse: collapse; /* Allows setting of the table border colour */
+    }
+
+    .enquiries-table th:nth-child(1) {
+        border-top-left-radius: 5px !important;
+    }
+
+    .enquiries-table th:last-child {
+        border-top-right-radius: 5px !important;
     }
 
     .table-headers {
