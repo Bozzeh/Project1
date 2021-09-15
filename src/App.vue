@@ -14,7 +14,7 @@
             </v-card>
             <v-card flat> <!-- Additional padding -->
                 <v-card-actions class="dont-flex">
-                    <FilterComponent></FilterComponent>
+                    <FilterComponent :postcodes="postcodes" :types="types" @filter="(event) => FilerList(event)"></FilterComponent>
                 </v-card-actions>
             </v-card>
             <v-card flat style="margin-top: 4%; border-top-right-radius: 5px; border-top-left-radius: 5px;">
@@ -44,11 +44,31 @@ export default {
             curVal: null,
             dir: null,
             enquiries: [],
+            postcodes: [],
             results: 5, // Number of records per page
-            searchVal: ""
+            searchVal: "",
+            types: []
         }
     },
     methods: {
+        ApplyFilter: function (filterVal, arr, filterType) {
+            // Always convert the search value to lowercase and the existing data, always returns a match if true
+            let search = filterVal.toString().toLowerCase();
+            let filteredData = arr.filter(value => {
+                // Numbers converted to string as input takes in a string and includes doesn't apply to numbers
+                let idSearch = value.id.toString().includes(search);
+                let typeSearch = value.type.toLowerCase().includes(search);
+                let postcodeSearch = value.postcode.toString().includes(search);
+                let commentsSearch = value.comments.toLowerCase().includes(search);
+
+                return idSearch || typeSearch || postcodeSearch || commentsSearch; // Return the matches
+            });
+
+            // Don't want to paginate on selected filterType
+            if (filterType == "text") {
+                return this.PaginateData(filteredData, this.results);
+            } else return filteredData;
+        },
         // Perform sort on a given column
         DynamicSort: function (value) {
             let dir = this.dir; // To fix scoping issue inside the function below
@@ -77,6 +97,17 @@ export default {
 
                 return retVal;
             }
+        },
+        FilerList: function (filters) {
+            let enquiries = data.enquiries[0]["enquiries"];
+            for (let val in filters) {
+                if (filters[val] != "All") { // Don't filter on All, well because it doesn't even exist
+                    enquiries = this.ApplyFilter(filters[val], enquiries, "selection");
+                }
+            }
+
+            console.log(enquiries.length);
+            this.enquiries = this.PaginateData(enquiries, this.results); // And if we had no filters run with both options on 'All', it will simply use data.enquiries[0]["enquiries"] 
         },
         // This will reduce the given array to lengths given in the result param
         PaginateData: function (arr, result) { 
@@ -122,35 +153,30 @@ export default {
     mounted () {
         this.enquiries = this.PaginateData(data.enquiries[0]["enquiries"], this.results); // Our initial data, just get the array part then split it up for pagination
         console.log(this.enquiries);
+
+        // ..new Set eliminates duplicates allowing unique arrays for types and postcodes
+        this.postcodes = [...new Set(data.enquiries[0]["enquiries"].map(val => val.postcode))]; // Generate a unique set of postcodes
+        this.types = [...new Set(data.enquiries[0]["enquiries"].map(val => val.type))]; // Generate a unique set of type
+
+        // Add an all option to the filter arrays
+        this.postcodes.push("All");
+        this.types.push("All");
     },
     watch: {
         // Use the binded search var to filter the enquiries array whenever it changes
         searchVal () {
-            // Don't bother executing if our search val is empty or not defined
             if (this.searchVal == "" || this.searchVal == undefined) {
+                this.enquiries = this.PaginateData(data.enquiries[0]["enquiries"], this.results); // Execute on base dataset again. That is if there was a value in the search bar and the user backspaces it all
                 return;
             }
 
-            console.log(this.searchVal);
-            // Always convert the search value to lowercase and the existing data, always returns a match if true
-            let search = this.searchVal.toLowerCase();
-            this.enquiries = this.PaginateData(data.enquiries[0]["enquiries"].filter(value => {
-                // Numbers converted to string as input takes in a string and includes doesn't apply to numbers
-                let idSearch = value.id.toString().includes(search);
-                let typeSearch = value.type.toLowerCase().includes(search);
-                let postcodeSearch = value.postcode.toString().includes(search);
-                let commentsSearch = value.comments.toLowerCase().includes(search);
-
-                return idSearch || typeSearch || postcodeSearch || commentsSearch; // Return the matches
-            }), this.results);
+            this.enquiries = this.ApplyFilter(this.searchVal, data.enquiries[0]["enquiries"], "text");
         }
     }
 };
 </script>
 
 <style>
-    /* @import "../assets/styles.css"; */
-
     /* Applied to maintain same html sizes across alligned elements */
     .content-size {
         width: 95%;

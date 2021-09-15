@@ -87,13 +87,18 @@ export default {
             this.activePage = i;
         }
     },
-    mounted () { }
+    mounted () { },
+    watch: {
+        enquiries () {
+            // Whenever the enquiries dataset changes, reset to page 1
+            // This is because if the user is on page 3/4 and the filter leaves just 2 pages, it will not be on a page as 3/4 does not exist
+            this.activePage = 1;
+        }
+    }
 }
 </script>
 
 <style>
-    /* @import "../assets/styles.css"; */
-
     table * {
         padding-top: 10px;
         padding-bottom: 10px;
