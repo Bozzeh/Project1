@@ -1,4 +1,5 @@
 # Coding Challenge
+Access to the app: https://resolution-digital-challenge.herokuapp.com/
 
 ## Project setup
 ```
